@@ -1,19 +1,0 @@
-
-„
-java:S1192"áDefine a constant instead of duplicating this literal "Bonjour !Je souhaiterais faire de la marche nordique. Pas initiÃ©e, je recherche une ou plusieurs personnes susceptibles de m'accompagner !J'aime faire la fÃªte" 3 times.(”ïÎ™úÿÿÿÿ8ê™ÂÉ0
-}
-java:S1192"[Define a constant instead of duplicating this literal "Saint-Pierre-du-Mont ; 6km" 4 times.(‡¦œüÿÿÿÿ8ë™ÂÉ0
-r
-java:S1104"\Make DUMMY_NEIGHBOURS a static final constant or non-public and provide accessors if needed.(ª¥êñ
-L
-java:S1444"6Make this "public static DUMMY_NEIGHBOURS" field final(ª¥êñ
-L
-java:S54111"*Use the primitive boolean expression here.(Ä‚ªúÿÿÿÿ8í™ÂÉ0
-q
-java:S3008"[Rename this field "DUMMY_NEIGHBOURS" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ª¥êñ
-:
-java:S2386"Make this member "protected".(ª¥êñ8ù™ÂÉ0
-P
-java:S1118":Add a private constructor to hide the implicit public one.(„½¢ë
-H
-java:S1128	"+Remove this unused import 'io.realm.Realm'.(½¨ÀÜ8úÅÂÉ0

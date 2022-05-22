@@ -1,7 +1,0 @@
-
-q
-java:S1128"TRemove this unnecessary import: same package classes are always implicitly imported.(‰ØÛÆ8¦ÎÓÉ0
-H
-java:S1128"+Remove this unused import 'io.realm.Realm'.(½¨ÀÜ8¦ÎÓÉ0
-U
-java:S1128"8Remove this unused import 'io.realm.RealmConfiguration'.(ÿûá³8¦ÎÓÉ0
