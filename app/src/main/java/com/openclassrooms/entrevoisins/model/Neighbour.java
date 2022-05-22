@@ -2,12 +2,14 @@ package com.openclassrooms.entrevoisins.model;
 
 import java.util.Objects;
 
+
 /**
  * Model object representing a Neighbour
  */
-public class Neighbour {
+public class Neighbour   {
 
     /** Identifier */
+
     private long id;
 
     /** Full name */
@@ -46,6 +48,9 @@ public class Neighbour {
         this.phoneNumber = phoneNumber;
         this.mailAddresse = addEmail;
         this.aboutMe = aboutMe;
+    }
+
+    public Neighbour() {
     }
 
     public long getId() {

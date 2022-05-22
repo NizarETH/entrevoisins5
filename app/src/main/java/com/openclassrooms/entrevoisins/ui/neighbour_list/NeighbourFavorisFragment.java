@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.collection.ArraySet;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,19 +19,22 @@ import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.events.DeleteNeighbourEvent;
 import com.openclassrooms.entrevoisins.model.Neighbour;
+import com.openclassrooms.entrevoisins.service.GetIdNeighbour;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class NeighbourFavorisFragment extends Fragment {
+public class NeighbourFavorisFragment extends Fragment implements GetIdNeighbour   {
 
     private NeighbourApiService mApiService;
-    private List<Neighbour> mNeighbours;
+ 
     private RecyclerView mRecyclerView;
+    private List<Neighbour> favoriteNeighbours ;
 
 
     /**
@@ -63,7 +67,16 @@ public class NeighbourFavorisFragment extends Fragment {
      * Init the List of neighbours
      */
     public void initList() {
-        mNeighbours = mApiService.getFavorisNeighbours();
+
+        favoriteNeighbours = new ArrayList<>();
+
+        List<Neighbour> mNeighbours = mApiService.getNeighbours();
+        for (int i = 0; i < mNeighbours.size(); i++) {
+            if(mNeighbours.get(i).getFavorite())
+                favoriteNeighbours.add(mNeighbours.get(i));
+            
+        }
+ 
         PreferencesManager prefs = PreferencesManager.getInstance();
         Neighbour neighbour = new Neighbour(prefs.getIntValue("id"),
                 prefs.getStringValue("userName"),
@@ -76,23 +89,23 @@ public class NeighbourFavorisFragment extends Fragment {
                 );
         if(prefs.getStringValue("userName") != null && !prefs.getStringValue("userName").isEmpty())
         {
-            mNeighbours.add(neighbour);
-            prefs.clear();
+            favoriteNeighbours.add(neighbour);
+          prefs.clear();
         }
 
-        mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
+        mRecyclerView.setAdapter(new MyFavoriteNeighbourRecyclerViewAdapter(favoriteNeighbours,   this));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        initList();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initList();
+
     }
 
     @Override
@@ -115,5 +128,19 @@ public class NeighbourFavorisFragment extends Fragment {
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
         mApiService.deleteNeighbour(event.neighbour);
         initList();
+    }
+
+
+    @Override
+    public void value(String name) {
+        for (int i = 0; i < mApiService.getNeighbours().size(); i++) {
+            if(mApiService.getNeighbours().get(i).getName().equalsIgnoreCase(name))
+               mApiService.deleteNeighbour(mApiService.getNeighbours().get(i));
+        }
+
+        NeighbourFragment neighbourFragment = (NeighbourFragment) getActivity(). getSupportFragmentManager()
+                .getFragments().get(0);
+
+        neighbourFragment.initList();
     }
 }

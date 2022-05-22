@@ -12,12 +12,15 @@ import com.openclassrooms.entrevoisins.PreferencesManager;
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.service.DisplayFavoriteList;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ListNeighbourActivity extends AppCompatActivity implements DisplayFavoriteList {
 
+    private static final String TAG = "ListNeighbourActivity";
     // UI Components
     @BindView(R.id.tabs)
     TabLayout mTabLayout;
@@ -41,6 +44,39 @@ public class ListNeighbourActivity extends AppCompatActivity implements DisplayF
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                //
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+
+
+                      NeighbourFavorisFragment neighbourFavorisFragment = (NeighbourFavorisFragment) getSupportFragmentManager()
+                             .getFragments().get(1);
+                NeighbourFragment neighbourFragment = (NeighbourFragment) getSupportFragmentManager()
+                          .getFragments().get(0);
+
+                    if (position == 0) {
+                       // neighbourFragment.initList();
+                    } else if (position == 1) {
+                      //  neighbourFavorisFragment.initList();
+
+                    }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                //
+            }
+        });
 
     }
 

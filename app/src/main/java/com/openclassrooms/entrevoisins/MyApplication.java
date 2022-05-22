@@ -4,6 +4,9 @@ import android.app.Application;
 
 import com.openclassrooms.entrevoisins.PreferencesManager;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 public class MyApplication extends Application {
 
 
@@ -12,6 +15,7 @@ public class MyApplication extends Application {
         super.onCreate();
 
         PreferencesManager.initializeInstance(this);
+
 
     }
 }
