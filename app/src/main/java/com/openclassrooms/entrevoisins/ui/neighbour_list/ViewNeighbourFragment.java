@@ -13,10 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+
 import com.bumptech.glide.Glide;
-import com.openclassrooms.entrevoisins.PreferencesManager;
 import com.openclassrooms.entrevoisins.R;
+import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.service.DisplayFavoriteList;
+
+import io.realm.Realm;
 
 
 public class ViewNeighbourFragment extends Fragment {
@@ -38,14 +41,18 @@ public class ViewNeighbourFragment extends Fragment {
         v = inflater.inflate(R.layout.viewneighbouractivity, container,false);
 
         Bundle bundle = getArguments();
-        int id=bundle.getInt("id",0);
-        String userName=bundle.getString("username");
-        String photo=bundle.getString("photo");
-        String address=bundle.getString("addresse");
-        String numtel=bundle.getString("phonenumber");
-        String addmail=bundle.getString("addressemail");
-        String aproposdemoi=bundle.getString("aboutme");
-        Boolean isfavorite=bundle.getBoolean("isFavorite",false);
+        int id = bundle.getInt("id",0);
+
+        Realm r = Realm.getDefaultInstance();
+
+        Neighbour neighbour = r.where(Neighbour.class).equalTo("id",id).findFirst();
+        String userName = neighbour.getName();
+        String photo = neighbour.getAvatarUrl();
+        String address = neighbour.getAddress();
+        String numtel = neighbour.getPhoneNumber();
+        String addmail = neighbour.getMailAddresse();
+        String aproposdemoi = neighbour.getAboutMe();
+        Boolean isfavorite = neighbour.getFavorite();
 
 
         TextView name = v.findViewById(R.id.nameLyt);
@@ -57,6 +64,7 @@ public class ViewNeighbourFragment extends Fragment {
 
 
         ImageView   img = v.findViewById(R.id.kb9);
+
         Glide.with(this).load(photo).into(img);
 
         name.setText(userName);
@@ -77,22 +85,15 @@ public class ViewNeighbourFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                PreferencesManager prefs = PreferencesManager.getInstance();
+                r.beginTransaction();
+                neighbour.setFavorite(true);
+                r.commitTransaction();
 
-                if (isfavorite == false)
-                {
-                    prefs.setIntValue("id", id);
-                    prefs.setStringValue("userName", userName);
-                    prefs.setStringValue("photo", photo);
-                    prefs.setStringValue("address", address);
-                    prefs.setStringValue("numtel", numtel);
-                    prefs.setStringValue("addmail", addmail);
-                    prefs.setStringValue("aproposdemoi", aproposdemoi);
 
-                    displayFavoriteList.apply();
+                displayFavoriteList.apply();
 
-                    getActivity().getSupportFragmentManager().popBackStack();
-                }
+                getActivity().getSupportFragmentManager().popBackStack();
+
             }
         });
 

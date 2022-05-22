@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.openclassrooms.entrevoisins.R;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 public class MyFavoriteNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyFavoriteNeighbourRecyclerViewAdapter.ViewHolder> {
 
@@ -59,9 +61,13 @@ public class MyFavoriteNeighbourRecyclerViewAdapter extends RecyclerView.Adapter
         holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Realm r = Realm.getDefaultInstance();
+                r.beginTransaction();
+                neighbour.deleteFromRealm();
+                r.commitTransaction();
 
-                getIdNeighbour.value(neighbour.getName());
-                mNeighbours.remove(neighbour);
+                getIdNeighbour.value("item is deleted");
+
                 notifyItemRemoved(holder.getAbsoluteAdapterPosition());
 
             }
@@ -71,14 +77,6 @@ public class MyFavoriteNeighbourRecyclerViewAdapter extends RecyclerView.Adapter
             public void onClick(View view) {
                 Bundle i = new Bundle();
                 i.putInt("id", (int) neighbour.getId());
-                i.putString("username", neighbour.getName());
-                i.putString("photo", neighbour.getAvatarUrl());
-                i.putString("addresse", neighbour.getAddress());
-                i.putString("phonenumber", neighbour.getPhoneNumber());
-                i.putString("addressemail", neighbour.getMailAddresse());
-                i.putString("aboutme", neighbour.getAboutMe());
-                i.putBoolean("isFavorite", neighbour.getFavorite());
-
 
                 ViewNeighbourFragment viewNeighbourFragment =  new ViewNeighbourFragment();
                 viewNeighbourFragment.setArguments(i);

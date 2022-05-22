@@ -28,14 +28,14 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+
 
 public class NeighbourFavorisFragment extends Fragment implements GetIdNeighbour   {
 
     private NeighbourApiService mApiService;
- 
     private RecyclerView mRecyclerView;
     private List<Neighbour> favoriteNeighbours ;
-
 
     /**
      * Create and return a new instance
@@ -68,30 +68,8 @@ public class NeighbourFavorisFragment extends Fragment implements GetIdNeighbour
      */
     public void initList() {
 
-        favoriteNeighbours = new ArrayList<>();
-
-        List<Neighbour> mNeighbours = mApiService.getNeighbours();
-        for (int i = 0; i < mNeighbours.size(); i++) {
-            if(mNeighbours.get(i).getFavorite())
-                favoriteNeighbours.add(mNeighbours.get(i));
-            
-        }
- 
-        PreferencesManager prefs = PreferencesManager.getInstance();
-        Neighbour neighbour = new Neighbour(prefs.getIntValue("id"),
-                prefs.getStringValue("userName"),
-                prefs.getStringValue("photo"),
-                prefs.getStringValue("address"),
-                prefs.getStringValue("numtel"),
-                prefs.getStringValue("addmail"),
-                prefs.getStringValue("aproposdemoi"),
-                true
-                );
-        if(prefs.getStringValue("userName") != null && !prefs.getStringValue("userName").isEmpty())
-        {
-            favoriteNeighbours.add(neighbour);
-          prefs.clear();
-        }
+        Realm r = Realm.getDefaultInstance();
+        favoriteNeighbours =  r.where(Neighbour.class).equalTo("isFavorite", true).findAll();
 
         mRecyclerView.setAdapter(new MyFavoriteNeighbourRecyclerViewAdapter(favoriteNeighbours,   this));
     }
@@ -133,10 +111,6 @@ public class NeighbourFavorisFragment extends Fragment implements GetIdNeighbour
 
     @Override
     public void value(String name) {
-        for (int i = 0; i < mApiService.getNeighbours().size(); i++) {
-            if(mApiService.getNeighbours().get(i).getName().equalsIgnoreCase(name))
-               mApiService.deleteNeighbour(mApiService.getNeighbours().get(i));
-        }
 
         NeighbourFragment neighbourFragment = (NeighbourFragment) getActivity(). getSupportFragmentManager()
                 .getFragments().get(0);

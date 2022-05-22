@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.realm.Realm;
+
 public abstract class DummyNeighbourGenerator {
 
     public static List<Neighbour> DUMMY_NEIGHBOURS = Arrays.asList(
@@ -35,18 +37,18 @@ public abstract class DummyNeighbourGenerator {
                     "+33 6 55 74 95 48",  "ludovic@network.fr","Bonjour !Je souhaiterais faire de la marche nordique. Pas initiée, je recherche une ou plusieurs personnes susceptibles de m'accompagner !J'aime les maths", true)
     );
 
+
     static List<Neighbour> generateNeighbours() {
 
-        return new ArrayList<>(DUMMY_NEIGHBOURS);
-    }
-
-    public static List<Neighbour> favorisNeighbours() {
-        List<Neighbour> favorisNeighbours = new ArrayList<>();
-
-        for (int i = 0; i < generateNeighbours().size(); i++) {
-                if(generateNeighbours().get(i).getFavorite())
-                    favorisNeighbours.add(generateNeighbours().get(i));
+        Realm r = Realm.getDefaultInstance();
+        List<Neighbour> all = new ArrayList<>(DUMMY_NEIGHBOURS);
+        r.beginTransaction();
+        for (int i = 0; i < all.size(); i++) {
+            r.copyToRealmOrUpdate(all.get(i));
         }
-        return favorisNeighbours;
+        r.commitTransaction();
+
+        return r.where(Neighbour.class).findAll();
     }
+
 }

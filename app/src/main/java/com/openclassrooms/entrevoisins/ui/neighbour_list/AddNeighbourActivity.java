@@ -24,6 +24,7 @@ import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.realm.Realm;
 
 public class AddNeighbourActivity extends AppCompatActivity {
 
@@ -75,8 +76,11 @@ public class AddNeighbourActivity extends AppCompatActivity {
 
     private void init() {
         mNeighbourImage = randomImage();
+
+
         Glide.with(this).load(mNeighbourImage).placeholder(R.drawable.ic_account)
                 .apply(RequestOptions.circleCropTransform()).into(avatar);
+
         nameInput.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -93,7 +97,7 @@ public class AddNeighbourActivity extends AppCompatActivity {
     @OnClick(R.id.create)
     void addNeighbour() {
         Neighbour neighbour = new Neighbour(
-                System.currentTimeMillis(),
+                (int) System.currentTimeMillis(),
                 nameInput.getEditText().getText().toString(),
                 mNeighbourImage,
                 addressInput.getEditText().getText().toString(),
@@ -102,7 +106,12 @@ public class AddNeighbourActivity extends AppCompatActivity {
                 addMail.getEditText().getText().toString(),
                 false
         );
-        mApiService.createNeighbour(neighbour);
+
+        Realm r = Realm.getDefaultInstance();
+        r.beginTransaction();
+        r.copyToRealmOrUpdate(neighbour);
+        r.commitTransaction();
+
         finish();
     }
 

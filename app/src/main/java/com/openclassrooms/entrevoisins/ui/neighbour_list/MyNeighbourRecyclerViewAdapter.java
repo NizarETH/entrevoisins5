@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.openclassrooms.entrevoisins.R;
@@ -20,7 +21,6 @@ import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.events.DeleteNeighbourEvent;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.service.GetIdFavoriteNeighbour;
-import com.openclassrooms.entrevoisins.service.GetIdNeighbour;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -28,6 +28,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeighbourRecyclerViewAdapter.ViewHolder> {
 
@@ -49,10 +50,9 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+
         Neighbour neighbour = mNeighbours.get(position);
         holder.mNeighbourName.setText(neighbour.getName());
-
-        ((ImageView) view.findViewById(R.id.item_list_avatar)).setImageResource(android.R.color.transparent);
 
 
         Glide.with(holder.mNeighbourAvatar.getContext())
@@ -63,11 +63,14 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
         holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Realm r = Realm.getDefaultInstance();
+                r.beginTransaction();
+                neighbour.deleteFromRealm();
+                r.commitTransaction();
 
-                getIdFavoriteNeighbour.valueFavorite(neighbour.getName());
+                getIdFavoriteNeighbour.valueFavorite("item is deleted");
 
                 notifyItemRemoved(holder.getAbsoluteAdapterPosition());
-
             }
         });
        holder.mainContent.setOnClickListener(new View.OnClickListener() {
@@ -75,14 +78,6 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
             public void onClick(View view) {
                 Bundle i = new Bundle();
                 i.putInt("id", (int) neighbour.getId());
-                i.putString("username", neighbour.getName());
-                i.putString("photo", neighbour.getAvatarUrl());
-                i.putString("addresse", neighbour.getAddress());
-                i.putString("phonenumber", neighbour.getPhoneNumber());
-                i.putString("addressemail", neighbour.getMailAddresse());
-                i.putString("aboutme", neighbour.getAboutMe());
-                i.putBoolean("isFavorite", neighbour.getFavorite());
-
 
                 ViewNeighbourFragment viewNeighbourFragment =  new ViewNeighbourFragment();
                 viewNeighbourFragment.setArguments(i);

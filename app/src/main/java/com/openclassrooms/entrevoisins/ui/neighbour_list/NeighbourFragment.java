@@ -24,6 +24,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
+import io.realm.Realm;
+
 
 public class NeighbourFragment extends Fragment implements  GetIdFavoriteNeighbour  {
 
@@ -62,7 +64,9 @@ public class NeighbourFragment extends Fragment implements  GetIdFavoriteNeighbo
      * Init the List of neighbours
      */
     public void initList() {
-        mNeighbours = mApiService.getNeighbours( );
+
+        Realm r = Realm.getDefaultInstance();
+        mNeighbours =  r.where(Neighbour.class).findAll();
         mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours,this));
     }
 
@@ -97,10 +101,7 @@ public class NeighbourFragment extends Fragment implements  GetIdFavoriteNeighbo
 
     @Override
     public void valueFavorite(String name) {
-        for (int i = 0; i < mApiService.getNeighbours().size(); i++) {
-            if(mApiService.getNeighbours().get(i).getName().equalsIgnoreCase(name))
-                mApiService.deleteNeighbour(mApiService.getNeighbours().get(i));
-        }
+
         NeighbourFavorisFragment neighbourFavorisFragment = (NeighbourFavorisFragment)getActivity(). getSupportFragmentManager()
                 .getFragments().get(1);
         neighbourFavorisFragment.initList();

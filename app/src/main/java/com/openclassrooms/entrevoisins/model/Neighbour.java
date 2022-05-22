@@ -2,15 +2,19 @@ package com.openclassrooms.entrevoisins.model;
 
 import java.util.Objects;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 
 /**
  * Model object representing a Neighbour
  */
-public class Neighbour   {
+public class Neighbour  extends RealmObject {
 
     /** Identifier */
 
-    private long id;
+    @PrimaryKey
+    private int id;
 
     /** Full name */
     private String name;
@@ -38,7 +42,7 @@ public class Neighbour   {
      * @param name
      * @param avatarUrl
      */
-    public Neighbour(long id, String name, String avatarUrl, String address,
+    public Neighbour(int id, String name, String avatarUrl, String address,
                      String phoneNumber, String addEmail, String aboutMe, Boolean isFavorite) {
         this.id = id;
         this.isFavorite = isFavorite    ;
@@ -53,11 +57,11 @@ public class Neighbour   {
     public Neighbour() {
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

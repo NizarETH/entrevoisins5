@@ -3,8 +3,8 @@
     <CLASSES>
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/122e18b04a1c74f79a079707c1ffa4ec/transformed/espresso-intents-3.1.0-alpha3/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/4f5de9ae8111e9beec2a4464a2a6b1b1/transformed/espresso-intents-3.1.0-alpha3/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/122e18b04a1c74f79a079707c1ffa4ec/transformed/espresso-intents-3.1.0-alpha3/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/122e18b04a1c74f79a079707c1ffa4ec/transformed/espresso-intents-3.1.0-alpha3/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/4f5de9ae8111e9beec2a4464a2a6b1b1/transformed/espresso-intents-3.1.0-alpha3/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/4f5de9ae8111e9beec2a4464a2a6b1b1/transformed/espresso-intents-3.1.0-alpha3/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.test.espresso/espresso-intents/3.1.0-alpha3/8a181e162173322271eeef4a410905c7ef9f39b6/espresso-intents-3.1.0-alpha3-javadoc.jar!/" />
